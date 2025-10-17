@@ -54,7 +54,7 @@ static int connnotice_postaccess(aClient *cptr)
         if (IsOper(acptr) && !IsMe(acptr))
         {
             sendto_one(acptr,
-                ":%s NOTICE %s :*** -t-chat.fr- *** %s: Client connecting at mars.t-chat.fr: %s!%s@%s (%s)",
+                ":%s NOTICE %s :*** -server.dev- *** %s: Client connecting at mars.t-chat.fr: %s!%s@%s (%s)",
                 me.name, acptr->name,
                 connect_type,
                 cptr->name,
