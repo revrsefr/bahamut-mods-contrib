@@ -842,11 +842,6 @@ static void ws_transport_close(aClient *cptr)
     ClearWebSocket(cptr);
 }
 
-static void ws_detach_plain(aClient *cptr)
-{
-    ws_transport_close(cptr);
-}
-
 static int ws_transport_out(aClient *to, char *msg, int len, char **out_buf, int *out_len)
 {
     ws_state *st = (ws_state *) to->transport_data;
@@ -915,8 +910,10 @@ static int ws_transport_in(aClient *cptr, char **buf, int *len)
     {
         if (st->handshake.len == 0 && *len > 0 && (*buf)[0] != 'G')
         {
-            ws_detach_plain(cptr);
-            return TRANSPORT_FILTER_CONTINUE;
+            ws_send_http_error(cptr);
+            ws_transport_close(cptr);
+            exit_client(cptr, cptr, &me, "WebSocket handshake required");
+            return FLUSH_BUFFER;
         }
         if (*len > 0 && ws_buffer_append(&st->handshake, *buf, (size_t)(*len)) != 0)
             return ws_fail_close_code(cptr, st, 1011, "oom buffering handshake");
