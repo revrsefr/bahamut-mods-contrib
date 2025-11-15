@@ -1,3 +1,11 @@
+/*
+ * Websockets feature for Bahamut IRCD
+ *
+ * Websockets connections.
+ *
+ * Author: reverse.dev
+ */
+
 #include "struct.h"
 #include "common.h"
 #include "sys.h"
